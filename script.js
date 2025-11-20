@@ -93,7 +93,7 @@ function setView(passport){
   document.body.classList.remove('full-map');
   listView.classList.toggle('active', !passport);
   passportView.classList.toggle('active', passport);
-    toggleBtn.textContent = passport ? 'Back to List' : 'Passport'; // accessible label reflects current action
+    toggleBtn.textContent = passport ? 'Back to List' : 'Stamps';  // accessible label reflects current action
   if(passport) renderPassport();
     // Leaflet needs a nudge after containers change size/visibility.
   setTimeout(()=>map.invalidateSize(), 150);
@@ -165,7 +165,6 @@ function renderList(){
   row.innerHTML = `
     <div>
       <div class="pool-name">${p.name}</div>
-      <div class="coords">${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}</div>
     </div>
     <button class="stamp-chip ${visited[p.name] ? 'stamped':''}" 
       data-name="${p.name}">${visited[p.name] ? 'Stamped' : 'Not yet'}</button>`;

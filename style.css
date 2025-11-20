@@ -763,3 +763,7 @@ body.full-map #map{
     height:calc(100vh - 200px);
   }
 }
+
+
+/* Hide count badge per latest UX request */
+#countBadge{ display:none !important; }

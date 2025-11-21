@@ -352,6 +352,32 @@ main{
   padding:12px 12px 10px;
 }
 
+/* New pool navigation bar ------------------------------------------------- */
+.pool-nav{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.pool-nav-btn{
+  min-width:140px;
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid var(--pill-border);
+  background:var(--pill-bg);
+  font-size:14px;
+  font-weight:700;
+  box-shadow:0 4px 10px rgba(7,20,34,.12);
+  cursor:pointer;
+}
+
+.pool-nav-btn:active{
+  transform:translateY(1px);
+  box-shadow:0 2px 6px rgba(7,20,34,.18);
+}
+
 /* Pool list --------------------------------------------------------------- */
 #poolList{
   max-height:120px;
@@ -398,7 +424,7 @@ main{
 /* Map panel --------------------------------------------------------------- */
 .map-wrap{
   position:relative;
-  padding-bottom:38px;
+  padding-bottom:16px; /* reduced for nicer white border */
 }
 
 .map-wrap #map{
@@ -610,6 +636,14 @@ body.full-map #map{
   .map-wrap #map{
     height:100% !important;
   }
+
+  .pool-nav{
+    flex-wrap:wrap;
+  }
+
+  .pool-nav-btn{
+    flex:1 1 45%;
+  }
 }
 
 /* --- iPhone Map FIX (Leaflet requires a real height) --- */
@@ -630,15 +664,15 @@ body.full-map #map{
     min-height: calc(100vh - 160px) !important;
   }
 
-  /* Let the map expand fully */
+  /* Let the map expand fully but leave a nice border */
   .map-wrap {
     flex: 1 1 auto !important;
-    min-height: calc(100vh - 220px) !important;
+    min-height: calc(100vh - 260px) !important; /* was 220px */
   }
 
   #map {
     height: 100% !important;
-    min-height: calc(100vh - 220px) !important;
+    min-height: calc(100vh - 260px) !important; /* was 220px */
   }
 }
 

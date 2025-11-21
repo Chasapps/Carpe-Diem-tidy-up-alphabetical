@@ -2,142 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Carpe Diem Passport — Splash</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0C2231">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Harbour Pools — App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="style.css">
-</head>
-<body class="splash-body" id="splashBody">
-  <div class="splash-overlay">
-    <div id="nameTip" class="name-tip">✨ Tap to personalize</div>
-    <h1 id="ownerName" class="foil-emboss owner-name">Tonia Norton</h1>
-  </div>
-  <div id="resetIcon">↻</div>
-  <div id="confirmBox">
-    <p>Reset name?</p>
-    <button id="btnYes">Yes</button>
-    <button id="btnNo">No</button>
-  </div>
   <script>
-  (function(){
-    const KEY='passport_owner_name',LOCK='passport_owner_name_locked';
-    const owner=document.getElementById('ownerName'),
-          body=document.getElementById('splashBody'),
-          tip=document.getElementById('nameTip'),
-          reset=document.getElementById('resetIcon'),
-          box=document.getElementById('confirmBox'),
-          yes=document.getElementById('btnYes'),
-          no=document.getElementById('btnNo');
-
-    const saved=localStorage.getItem(KEY),
-          locked=localStorage.getItem(LOCK)==='1';
-
-    if(saved) owner.textContent=saved;
-
-    if(!saved){
-      requestAnimationFrame(()=>tip.classList.add('show'));
-      setTimeout(()=>tip.classList.remove('show'),3000);
-    } else if(tip && tip.parentNode){
-      tip.remove();
-    }
-
-    function applyFoil(el){
-      el.classList.add('foil-emboss','owner-name');
-    }
-    applyFoil(owner);
-
-    // === GO TO OVERVIEW PAGE INSTEAD OF app.html ===
-    body.addEventListener('click',()=>{
-      try{ sessionStorage.setItem('enteredViaSplash','1'); }catch(e){}
-      window.location.href='overview.html';
-    });
-
-    // Prevent splash body click from firing when interacting with UI elements
-    [owner, reset, box, yes, no].forEach(el=>el&&el.addEventListener('click',ev=>ev.stopPropagation()));
-
-    owner.addEventListener('click',(e)=>{
-      e.stopPropagation();
-      if(localStorage.getItem(LOCK)==='1') return;
-
-      const prev=owner.textContent.trim();
-      const input=document.createElement('input');
-      input.type='text';
-      input.value=prev||'Your Name';
-      input.setAttribute('maxlength','40');
-      input.className='owner-input';
-      input.addEventListener('click',ev=>ev.stopPropagation());
-      owner.replaceWith(input);
-      input.focus();
-      input.select();
-
-      function finish(){
-        let v=input.value.trim()||prev||'Your Name';
-        try{
-          localStorage.setItem(KEY,v);
-          localStorage.setItem(LOCK,'1');
-        }catch(e){}
-        const h=document.createElement('h1');
-        h.id='ownerName';
-        h.textContent=v;
-        applyFoil(h);
-        h.style.pointerEvents='none';
-        input.replaceWith(h);
-      }
-
-      input.addEventListener('keydown',ev=>{
-        if(ev.key==='Enter'){
-          ev.preventDefault();
-          finish();
+    (function(){
+      try{
+        const e = sessionStorage.getItem('enteredViaSplash');
+        if(!e){
+          window.location.replace('index.html');
+        } else {
+          sessionStorage.removeItem('enteredViaSplash');
         }
-      });
-      input.addEventListener('blur',finish);
-    });
-
-    let pressTimer;
-    const showReset=()=>{ reset.classList.add('show'); };
-    const startPress=()=>{ clearTimeout(pressTimer); pressTimer=setTimeout(showReset,1500); };
-    const cancelPress=()=>{ clearTimeout(pressTimer); };
-
-    owner.addEventListener('mousedown', startPress);
-    owner.addEventListener('mouseup', cancelPress);
-    owner.addEventListener('mouseleave', cancelPress);
-    owner.addEventListener('touchstart', startPress, {passive:true});
-    owner.addEventListener('touchend', cancelPress);
-    owner.addEventListener('touchcancel', cancelPress);
-
-    reset.addEventListener('click', e => {
-      e.stopPropagation();
-      box.classList.add('show');
-    });
-
-    yes.addEventListener('click', e => {
-      e.stopPropagation();
-      localStorage.removeItem(KEY);
-      localStorage.removeItem(LOCK);
-      box.classList.remove('show');
-      reset.classList.remove('show');
-      owner.textContent='Tonia Norton';
-      applyFoil(owner);
-      if(tip && !document.body.contains(tip)){
-        document.querySelector('.splash-overlay').insertBefore(tip, document.querySelector('.splash-overlay').firstChild);
-      }
-      tip.classList.add('show');
-      setTimeout(()=>tip.classList.remove('show'),3000);
-    });
-
-    no.addEventListener('click', e => {
-      e.stopPropagation();
-      box.classList.remove('show');
-    });
-
-    body.addEventListener('click', ()=>{
-      setTimeout(()=>reset.classList.remove('show'), 3000);
-    });
-  })();
+      }catch(e){}
+    })();
   </script>
+</head>
+<body>
+  <header class="glass">
+    <div class="titlebar">
+      <div class="brand">
+        <div class="dot"></div>
+        <h1>Harbour Pools</h1>
+      </div>
+      <span id="countBadge" class="badge">0 / 0</span>
+      <div class="actions">
+        <button id="toggleBtn" class="pill primary" title="Toggle Stamps/List">Stamps</button>
+        <button id="resetBtn" class="pill ghost" title="Reset stamps">Reset</button>
+        <a href="index.html" class="pill ghost" title="Back to stamps">Exit</a>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section id="listView" class="view active">
+      <div class="controls">
+        <button id="btnUp" class="pill">▲</button>
+        <button id="btnDown" class="pill">▼</button>
+      </div>
+
+      <!-- New large pool navigation bar -->
+      <div class="pool-nav card">
+        <button id="btnPrevPool" class="pool-nav-btn">◀ Previous</button>
+        <button id="btnNextPool" class="pool-nav-btn">Next ▶</button>
+      </div>
+
+      <div class="content-split">
+        <div id="poolList" class="scroll-list card"></div>
+
+        <div class="map-wrap card">
+          <div id="map" class="pool-map"></div>
+          <div class="map-actions">
+            <button id="openNativeMap" class="pill ghost small">🧭 Open in Maps</button>
+            <button id="mapToggle" class="map-toggle pill" aria-pressed="false">🗺️ Full Map</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="passportView" class="view">
+      <h2 class="subtitle">Summer Quest Stamps</h2>
+      <div class="passport-nav">
+        <button id="prevPassportPage" class="pill ghost">&laquo; Prev</button>
+        <span id="passportPageLabel" class="page-label">Page 1 of 4</span>
+        <button id="nextPassportPage" class="pill ghost">Next &raquo;</button>
+      </div>
+      <div id="passportGrid" class="passport-grid"></div>
+      <p class="hint">Your stamps are saved to this device.</p>
+    </section>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

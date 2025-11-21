@@ -89,22 +89,22 @@ let onPassport = false;
  */
 function setView(passport){
   onPassport = passport;
-    // Always exit full-map when switching views so the UI remains predictable.
+  // Always exit full-map when switching views so the UI remains predictable.
   document.body.classList.remove('full-map');
   listView.classList.toggle('active', !passport);
   passportView.classList.toggle('active', passport);
-    toggleBtn.textContent = passport ? 'Back to List' : 'Stamps';  // accessible label reflects current action
+  toggleBtn.textContent = passport ? 'Back to List' : 'Stamps';  // accessible label reflects current action
   if(passport) renderPassport();
-    // Leaflet needs a nudge after containers change size/visibility.
+  // Leaflet needs a nudge after containers change size/visibility.
   setTimeout(()=>map.invalidateSize(), 150);
 }
 // Action: Toggle between views
- toggleBtn.addEventListener('click', ()=> setView(!onPassport));
+toggleBtn.addEventListener('click', ()=> setView(!onPassport));
 
 // Action: Reset stamps with a guard confirmation to prevent accidental loss.
 resetBtn.addEventListener('click', ()=>{
   if(!confirm('Clear all stamps?')) return;
-    visited = {}; // Simply clear the map; renders will interpret falsy as 'not stamped'
+  visited = {}; // Simply clear the map; renders will interpret falsy as 'not stamped'
   localStorage.setItem(LS_KEYS.VISITED, JSON.stringify(visited));
   renderList(); renderPassport(); updateCount();
 });
@@ -115,7 +115,7 @@ mapToggle.addEventListener('click', ()=>{
   const fm = document.body.classList.toggle('full-map');
   mapToggle.textContent = fm ? '📋 Back to Split' : '🗺️ Full Map';
   mapToggle.setAttribute('aria-pressed', fm ? 'true' : 'false');
-    // Invalidate map tile layout, then pan to ensure the selected marker is centered in the new layout.
+  // Invalidate map tile layout, then pan to ensure the selected marker is centered in the new layout.
   setTimeout(()=>{ map.invalidateSize(); panToSelected(); }, 150);
 });
 
@@ -151,7 +151,7 @@ if(openNativeMapBtn){
 
 /**
  * renderList() — Regenerates the list UI from the pools[] array and current 'visited' map.
- * For a small list this "rebuild each time" approach is simplest and very fast.
+ * For a small list this "rebuild each time" approach is simplest and vrlo fast.
  * If you scale up to hundreds of rows, consider diffing/patching or virtualization.
  */
 function renderList(){
@@ -196,7 +196,7 @@ function toggleStamp(name, animate=false){
   visited[name] = !visited[name];
   localStorage.setItem(LS_KEYS.VISITED, JSON.stringify(visited));
   renderList();
-    renderPassport(animate ? name : null); // pass the name so CSS can pop the changed stamp
+  renderPassport(animate ? name : null); // pass the name so CSS can pop the changed stamp
 }
 
 /**
@@ -216,9 +216,20 @@ function selectIndex(idx){
  */
 function moveSelection(step){ selectIndex(selectedIndex + step); }
 // Controls: ▲ moves up (previous row)
- document.getElementById('btnUp').addEventListener('click', ()=>moveSelection(-1));
+document.getElementById('btnUp').addEventListener('click', ()=>moveSelection(-1));
 // Controls: ▼ moves down (next row)
- document.getElementById('btnDown').addEventListener('click', ()=>moveSelection(1));
+document.getElementById('btnDown').addEventListener('click', ()=>moveSelection(1));
+
+// New large pool navigation buttons
+const btnPrevPool = document.getElementById('btnPrevPool');
+const btnNextPool = document.getElementById('btnNextPool');
+
+if (btnPrevPool) {
+  btnPrevPool.addEventListener('click', () => moveSelection(-1));
+}
+if (btnNextPool) {
+  btnNextPool.addEventListener('click', () => moveSelection(1));
+}
 
 // Passport page navigation
 if(prevPassportPageBtn){
@@ -257,7 +268,7 @@ const marker = L.marker([pools[0].lat, pools[0].lng]).addTo(map); // one marker 
 function panToSelected(){
   const p = pools[selectedIndex];
   marker.setLatLng([p.lat, p.lng]).bindPopup(p.name);
-    map.setView([p.lat, p.lng], 15, {animate:true}); // could switch to flyTo for smoother animation
+  map.setView([p.lat, p.lng], 15, {animate:true}); // could switch to flyTo for smoother animation
 }
 
 /**

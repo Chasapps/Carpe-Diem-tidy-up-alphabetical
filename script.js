@@ -305,7 +305,7 @@ function renderPassport(popName=null){
     card.className = 'passport';
     card.innerHTML = `
       <div class="title">${p.name}</div>
-      <div class="hint">${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}</div>
+
       <div class="stamp ${popName===p.name?'pop':''}" style="${stamped?'opacity:.98':'opacity:.45; filter:grayscale(1)'}">
         <img src="stamp.svg" alt="stamp">
         <div class="label">${stamped ? p.name.split(' ')[0].toUpperCase() : 'NOT STAMPED'}</div>

@@ -7,7 +7,7 @@
 /* Global base ------------------------------------------------------------- */
 :root{
   /* Deep inky navy from crest background */
-  --bg-navy: #102133;
+  --bg-navy: #112237;
 
   /* Foil gold tuned slightly cooler + brighter */
   --gold:#D1B36F;
@@ -47,7 +47,7 @@ html,body{
 
 .splash-body{
   min-height:100vh;
-  background-color: #102133;
+  background-color: #112237;
   background-image:url("Carpe-Diem.png");
   background-repeat:no-repeat;
   background-position:center 44%;

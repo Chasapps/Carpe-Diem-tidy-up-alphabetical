@@ -281,7 +281,7 @@ function renderPassport(popName=null){
   if(!grid) return;
 
   const pageLabel = document.getElementById('passportPageLabel');
-  const stampsPerPage = 4;
+  const stampsPerPage = 3;
   const totalPages = Math.max(1, Math.ceil(pools.length / stampsPerPage));
 
   // Clamp page to valid range
@@ -307,7 +307,7 @@ function renderPassport(popName=null){
       <div class="title">${p.name}</div>
       <div class="hint">${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}</div>
       <div class="stamp ${popName===p.name?'pop':''}" style="${stamped?'opacity:.98':'opacity:.45; filter:grayscale(1)'}">
-        <img src="assets/stamp.svg" alt="stamp">
+        <img src="stamp.svg" alt="stamp">
         <div class="label">${stamped ? p.name.split(' ')[0].toUpperCase() : 'NOT STAMPED'}</div>
       </div>`;
     grid.appendChild(card);
